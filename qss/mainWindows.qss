@@ -1,0 +1,9 @@
+QMainWindow#MouseTool{
+border-image: url(:/hidmouse/images/mainWindows.jpg);
+}
+QLabel#wpiLogo{
+border-image: url(:/hidmouse/images/wpi_logo.png);
+}
+QLabel#mouseImg{
+background-image: url(:/hidmouse/images/mouse.png);
+}

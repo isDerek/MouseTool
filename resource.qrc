@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/qss">
+        <file>qss/mainWindows.qss</file>
+    </qresource>
+    <qresource prefix="/hidmouse">
+        <file>images/mainWindows.jpg</file>
+        <file>images/mouse.png</file>
+        <file>images/wpi_logo.png</file>
+        <file>images/wpi_logo_hover.png</file>
+    </qresource>
+</RCC>
