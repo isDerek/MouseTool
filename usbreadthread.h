@@ -8,6 +8,7 @@ class USBReadThread :public QThread
 public:
     explicit USBReadThread(QObject *parent = nullptr);
     void getOpenHIDDevice(unsigned short PID,unsigned short VID,bool IsOpen);
+    void getSendData(QByteArray data, int length, int reportID);
 public slots:
 
 protected:

@@ -23,6 +23,8 @@ public:
     void clearHIDDeviceInfoList(); // 清空 HID 设备信息 List
     void setDisplayParams(); // 设置显示参数
     unsigned short HexStrToUShort(QString str, int length); // 16进制字符串转 Ushort
+    char ConvertHexChar(char ch); // 字符转 16 进制
+    void StringToHex(QString str, QByteArray &sendData); // 字符串转 16 进制
 private:
     Ui::MouseDebug *ui;
     QStringList HIDDeviceList; // HID 设备显示

@@ -23,6 +23,65 @@ MouseDebug::~MouseDebug()
 {
     delete ui;
 }
+char MouseDebug::ConvertHexChar(char ch)
+{
+    if((ch >= '0') && (ch <= '9'))
+    {
+        return ch-0x30;
+    }
+    else if(ch >= 'A' && ch <= 'F')
+    {
+        return ch-'A'+10;
+    }
+    else if(ch >= 'a' && ch <= 'f')
+    {
+        return ch-'a'+10;
+    }
+    else return ch-ch;
+}
+
+void MouseDebug::StringToHex(QString str, QByteArray &sendData)
+{
+    char hexdata,lowhexdata;
+    int hexdatalen = 0;
+    int len = str.length();
+    sendData.resize(len/2);
+    char lstr,hstr;
+    for (int i=0; i<len;) {
+        hstr=str[i].toLatin1();
+        if(hstr == ' ')
+        {
+//            qDebug()<< tr("null");
+            i++;
+            continue;
+        }
+        i++;
+        if(i>=len)
+        {
+//            qDebug()<< tr("over");
+            break;
+        }
+        lstr = str[i].toLatin1();
+        hexdata = ConvertHexChar(hstr);
+        lowhexdata = ConvertHexChar(lstr);
+        if((hexdata == 16) || (lowhexdata == 16))
+        {
+//            qDebug()<< tr("error");
+            break;
+        }
+        else
+        {
+            hexdata =  hexdata *16 + lowhexdata;
+        }
+        i++;
+//        qDebug("转化为16进制数：%d",hexdata);
+        sendData[hexdatalen] = hexdata;
+        hexdatalen++;
+    }
+    sendData.resize(hexdatalen);
+//    qDebug()<<sendData.length();
+}
+
 void MouseDebug::slot_rfStatusTmr()
 {
     getHIDDevceInfo();
@@ -159,12 +218,18 @@ unsigned short MouseDebug::HexStrToUShort(QString str, int length)
 void MouseDebug::on_on_offBtn_clicked()
 {
     unsigned short currentPID, currentVID;
+
     QString currentPIDText,currentVIDText;
     currentPIDText = ui->PIDLineEdit->text();
     currentVIDText = ui->VIDLineEdit->text();
+//  下拉框选择端口打开，但是打开端口后，当前的串口并不能扫描出来，已被占用，显示有问题
+//    currentPIDText = ui->comboHIDBox->currentText().right(4);
+//    currentVIDText = ui->comboHIDBox->currentText().mid(4,4).simplified();
+//    qDebug()<<currentPIDText;
+//    qDebug()<<currentVIDText;
     currentPID = HexStrToUShort(currentPIDText,currentPIDText.length());
     currentVID = HexStrToUShort(currentVIDText,currentVIDText.length());
-    usbReadThread.getOpenHIDDevice(currentVID,currentPID,!HIDDeviceIsOpen);// 调用线程函数去传递数据
+    usbReadThread.getOpenHIDDevice(currentPID,currentVID,!HIDDeviceIsOpen);// 调用线程函数去传递数据
     usbReadThread.start();
 }
 // 线程传递回来的设备是否开启参数，改变 UI 的开启关闭状态，同时将设备状态保存在当前类中
@@ -216,5 +281,23 @@ void MouseDebug::on_clearSendDataBtn_clicked()
 
 void MouseDebug::on_sendDataBtn_clicked()
 {
-
+    QByteArray sendData;
+    QByteArray HexBytes = ui->sendDataTextEdit->toPlainText().toLocal8Bit();
+    int reportID = ui->rpIDLineEdit->text().toInt();
+    int dataLength = ui->sendBytesLineEdit->text().toInt();
+    // 如果发送窗口为空，则不发送
+    if(HexBytes == "")
+    {
+        return;
+    }
+    StringToHex(HexBytes,sendData);
+//    qDebug()<<"reportID ="<<reportID<<" datalength = "<<dataLength<<" HIDOpen = "<<HIDDeviceIsOpen<<" SendData = "<<sendData;
+    if(!sendData.isEmpty()&& reportID != 0 && dataLength != 0 && HIDDeviceIsOpen == true)
+    {
+        usbReadThread.getSendData(sendData,dataLength,reportID);
+    }
+    else
+    {
+        ui->recvDataTextEdit->setText("参数漏啦，或者设备没打开");
+    }
 }

@@ -45,7 +45,7 @@
         <string>ReportID：</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="rpILineEdit">
+      <widget class="QLineEdit" name="rpIDLineEdit">
        <property name="geometry">
         <rect>
          <x>120</x>
@@ -364,7 +364,7 @@
       </layout>
      </widget>
     </item>
-    <item row="1" column="0">
+    <item row="0" column="0">
      <widget class="QGroupBox" name="groupBox">
       <property name="minimumSize">
        <size>
@@ -427,7 +427,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>PID：</string>
+        <string>VID：</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_13">
@@ -440,10 +440,10 @@
         </rect>
        </property>
        <property name="text">
-        <string>VID:</string>
+        <string>PID:</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="PIDLineEdit">
+      <widget class="QLineEdit" name="VIDLineEdit">
        <property name="geometry">
         <rect>
          <x>100</x>
@@ -453,7 +453,7 @@
         </rect>
        </property>
       </widget>
-      <widget class="QLineEdit" name="VIDLineEdit">
+      <widget class="QLineEdit" name="PIDLineEdit">
        <property name="geometry">
         <rect>
          <x>100</x>
