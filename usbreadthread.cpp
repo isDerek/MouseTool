@@ -76,5 +76,5 @@ void USBReadThread::getSendData(QByteArray data, int length, int reportID)
 //         qDebug()<<sendBuf[i];
     }
 
-    hid_write(handle,sendBuf,length+1);
+    hid_write(handle,sendBuf,length);
 }
