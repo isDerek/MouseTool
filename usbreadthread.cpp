@@ -68,9 +68,9 @@ void USBReadThread::getSendData(QByteArray data, int length, int reportID)
 {
 
     unsigned char *sendBuf;
-    sendBuf = (unsigned char*)malloc(length+1);
+    sendBuf = (unsigned char*)malloc(length);
     sendBuf[0] = reportID;
-    for(int i=1;i<length+1;i++)
+    for(int i=1;i<length;i++)
     {
         sendBuf[i] = data[i-1];
 //         qDebug()<<sendBuf[i];
